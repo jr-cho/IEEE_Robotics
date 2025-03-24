@@ -26,4 +26,26 @@ allprojects {
 
 repositories {
     mavenCentral()
+    google()
 }
+
+task checkAdbConnection {
+    doLast {
+        def adbPath = android.getAdbExe().toString()
+        def process = "${adbPath} devices".execute()
+        def output = process.text.trim()
+        if (!output.contains("192.168.43.1:5555")) {
+            println "Control Hub not connected. Attempting to connect..."
+            def connectProcess = "${adbPath} connect 192.168.43.1:5555".execute()
+            connectProcess.waitFor()
+            if (!connectProcess.text.contains("connected")) {
+                throw new GradleException("Failed to connect to Control Hub.")
+            } else {
+                println "Successfully connected to Control Hub."
+            }
+        } else {
+            println "Control Hub is already connected."
+        }
+    }
+}
+
