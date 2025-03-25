@@ -1,29 +1,32 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Intake {
+    private final DcMotor intakeMotor;
 
-    private DcMotor intakeMotor;
+    // Power levels (can be adjusted later or moved to constants)
+    private static final double HIGH_POWER = -0.8;
+    private static final double LOW_POWER = -0.2;
 
-    public Intake(RobotHardware hardware) {
-        this.intakeMotor = hardware.intakeMotor;
+    private static final double STOP_POWER = 0.0;
+
+    public Intake(HardwareMap hardwareMap) {
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        intakeMotor.setPower(STOP_POWER);
+        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void start() {
-        intakeMotor.setPower(1.0); // full power intake
-    }
+        intakeMotor.setPower(HIGH_POWER);
 
-    public void reverse() {
-        intakeMotor.setPower(-1.0); // reverse direction
     }
-
     public void stop() {
-        intakeMotor.setPower(0.0);
+        intakeMotor.setPower(STOP_POWER);
     }
 
     public void setPower(double power) {
-        intakeMotor.setPower(power); // custom power control if needed
+        intakeMotor.setPower(power);
     }
 }

@@ -2,10 +2,13 @@ package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
-import org.firstinspires.ftc.teamcode.subsystems.DriveTrain;
 
-@Autonomous(name = "main", group = "Autonomous")
+import org.firstinspires.ftc.teamcode.subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
+
+
+@Autonomous(name = "drive test", group = "Autonomous")
 public class AutonomousMain extends LinearOpMode {
 
     @Override
@@ -13,6 +16,7 @@ public class AutonomousMain extends LinearOpMode {
         // Initialize subsystems
         DriveTrain driveTrain = new DriveTrain(hardwareMap);
         BeaconArm beaconArm = new BeaconArm(hardwareMap);
+        Intake intake = new Intake(hardwareMap);
 
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
@@ -20,10 +24,17 @@ public class AutonomousMain extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-            telemetry.addData("Status", "Robot is now moivng!");
+            telemetry.addData("Status", "Moving forward");
             telemetry.update();
-            driveTrain.drive(1);
-            
+
+            while(true){
+                intake.start();
+                driveTrain.driveStraight(-0.6, 1000);
+                driveTrain.strafeRight(-0.6, 250);
+            }
+
+
+
         }
     }
 }
